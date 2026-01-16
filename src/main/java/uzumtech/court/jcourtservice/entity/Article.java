@@ -14,7 +14,7 @@ import uzumtech.court.jcourtservice.constant.enums.DecisionType;
 public class Article extends BaseEntity {
 
     @Column(nullable = false)
-    private float code;
+    private String code;
 
     @Column(nullable = false)
     private String title;
