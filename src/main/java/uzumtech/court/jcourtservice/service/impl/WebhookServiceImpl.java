@@ -1,42 +1,51 @@
 package uzumtech.court.jcourtservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import uzumtech.court.jcourtservice.entity.CourtDecision;
 import uzumtech.court.jcourtservice.entity.WebhookSubscription;
+import uzumtech.court.jcourtservice.exception.NotFoundException;
 import uzumtech.court.jcourtservice.repository.WebhookSubscriptionRepository;
 import uzumtech.court.jcourtservice.service.abstraction.WebhookService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class WebhookServiceImpl implements WebhookService {
 
-    private final WebhookSubscriptionRepository webhookSubscriptionRepository;
-    private final RestTemplate restTemplate;
+    private final WebhookSubscriptionRepository repository;
 
     @Override
-    public void sendDecision(CourtDecision decision) {
-        List<WebhookSubscription> subscriptions =
-                webhookSubscriptionRepository.findAllByActiveTrue();
+    public WebhookSubscription create(String url) {
+        WebhookSubscription subscription = WebhookSubscription.builder()
+                .url(url)
+                .active(true)
+                .build();
 
-        for (WebhookSubscription subscription : subscriptions) {
-            send(subscription.getUrl(), decision);
-        }
+        return repository.save(subscription);
     }
 
-    private void send(String url, CourtDecision decision) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    @Override
+    public List<WebhookSubscription> getAll() {
+        return repository.findAll();
+    }
 
-        HttpEntity<CourtDecision> request =
-                new HttpEntity<>(decision, headers);
+    @Override
+    public WebhookSubscription activate(UUID id) {
+        WebhookSubscription subscription = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Webhook not found"));
 
-        restTemplate.postForEntity(url, request, Void.class);
+        subscription.setActive(true);
+        return repository.save(subscription);
+    }
+
+    @Override
+    public WebhookSubscription deactivate(UUID id) {
+        WebhookSubscription subscription = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Webhook not found"));
+
+        subscription.setActive(false);
+        return repository.save(subscription);
     }
 }
