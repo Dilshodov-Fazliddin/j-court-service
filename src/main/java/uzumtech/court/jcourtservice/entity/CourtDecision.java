@@ -13,7 +13,7 @@ import uzumtech.court.jcourtservice.constant.enums.DecisionType;
 @Builder
 public class CourtDecision extends BaseEntity{
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "violation_id")
     private Violation violation;
 

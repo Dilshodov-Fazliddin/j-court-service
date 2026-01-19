@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
     Optional<Article> findByCode(String code);
+
+    Optional<Article> findById(UUID id);
 }

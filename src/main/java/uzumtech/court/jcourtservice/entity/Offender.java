@@ -20,7 +20,7 @@ public class Offender extends BaseEntity{
     private String fullName;
 
     @Column(nullable = false, unique = true)
-    private String passwordNumber;
+    private String passportNumber;
 
     @Column(nullable = false)
     private LocalDate birthDate;

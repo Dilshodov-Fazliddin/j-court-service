@@ -23,10 +23,7 @@ public class Article extends BaseEntity {
     private String description;
 
     @Column(nullable = false)
-    private double minFine;
-
-    @Column(nullable = false)
-    private double maxFine;
+    private double fine;
 
     @Enumerated(EnumType.STRING)
     private DecisionType decisionType;
