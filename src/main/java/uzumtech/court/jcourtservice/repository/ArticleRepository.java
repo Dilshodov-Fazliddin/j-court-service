@@ -1,15 +1,10 @@
 package uzumtech.court.jcourtservice.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import uzumtech.court.jcourtservice.entity.Article;
+import uzumtech.court.jcourtservice.entity.ArticleEntity;
 
-import java.util.Optional;
-import java.util.UUID;
+public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
 
-@Repository
-public interface ArticleRepository extends JpaRepository<Article, UUID> {
-    Optional<Article> findByCode(String code);
-
-    Optional<Article> findById(UUID id);
 }

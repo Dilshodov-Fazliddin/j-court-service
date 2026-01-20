@@ -1,36 +1,33 @@
 package uzumtech.court.jcourtservice.service.impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import uzumtech.court.jcourtservice.dto.request.OffenderDto;
-import uzumtech.court.jcourtservice.entity.Offender;
-import uzumtech.court.jcourtservice.exception.ConflictException;
+import uzumtech.court.jcourtservice.adapter.GcpAdapter;
+import uzumtech.court.jcourtservice.dto.request.OffenderRequest;
+import uzumtech.court.jcourtservice.dto.response.OffenderResponse;
+import uzumtech.court.jcourtservice.entity.OffenderEntity;
+import uzumtech.court.jcourtservice.mapper.OffenderMapper;
 import uzumtech.court.jcourtservice.repository.OffenderRepository;
-import uzumtech.court.jcourtservice.service.abstraction.OffenderService;
-;import java.util.Optional;
+import uzumtech.court.jcourtservice.service.OffenderService;
+;
 
 @RequiredArgsConstructor
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class OffenderServiceImpl implements OffenderService {
 
-    private final OffenderRepository offenderRepository;
+    OffenderRepository offenderRepository;
+    GcpAdapter gcpAdapter;
+    OffenderMapper offenderMapper;
 
     @Override
-    public Offender createOffender(OffenderDto offenderDto) {
-
-        Optional<Offender> existOffender = offenderRepository.findByPassportNumber(offenderDto.getPassportNumber());
-        if(existOffender.isPresent()){
-            throw new ConflictException("Offender already exists");
-        }
-
-        Offender offender = Offender.builder()
-                .fullName(offenderDto.getFullName())
-                .passportNumber(offenderDto.getPassportNumber())
-                .birthDate(offenderDto.getDateOfBirth())
-                .build();
-
-        return offenderRepository.save(offender);
+    public OffenderResponse create(OffenderRequest offenderRequest) {
+        var user = gcpAdapter.getUser(offenderRequest.personalIdentificationNumber());
+        var offenderEntity = offenderMapper.fromGcpToEntity(user);
+        var save = offenderRepository.save(offenderEntity);
+        return offenderMapper.toResponse(save);
     }
-
 
 }

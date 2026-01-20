@@ -2,10 +2,11 @@ package uzumtech.court.jcourtservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uzumtech.court.jcourtservice.service.ViolationService;
+import uzumtech.court.jcourtservice.service.CourtDecisionService;
 
 @RequiredArgsConstructor
 @Service
-public class ViolationServiceImpl implements ViolationService {
+public class CourtDecisionServiceImpl implements CourtDecisionService {
+
 
 }

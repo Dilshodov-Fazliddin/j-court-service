@@ -1,25 +1,29 @@
 package uzumtech.court.jcourtservice.controller;
 
+import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-import uzumtech.court.jcourtservice.dto.request.OffenderDto;
-import uzumtech.court.jcourtservice.entity.Offender;
-import uzumtech.court.jcourtservice.exception.ApiResponse;
-import uzumtech.court.jcourtservice.service.abstraction.OffenderService;
+import uzumtech.court.jcourtservice.dto.request.OffenderRequest;
+import uzumtech.court.jcourtservice.dto.response.OffenderResponse;
+import uzumtech.court.jcourtservice.service.OffenderService;
 
 @RestController
-@RequestMapping("/offender")
+@RequestMapping("/api/court/offender")
 @RequiredArgsConstructor
+@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+
 public class OffenderController {
 
-    private final OffenderService offenderService;
+    OffenderService offenderService;
 
-    @PostMapping()
-    public ResponseEntity<ApiResponse<Offender>> addOffender(@RequestBody OffenderDto offenderDto) {
-        Offender offender = offenderService.createOffender(offenderDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(offender));
+
+
+    @PostMapping
+    public OffenderResponse createOffender(
+            @RequestBody @Valid OffenderRequest offenderRequest
+    ){
+        return offenderService.create(offenderRequest);
     }
-
 }
