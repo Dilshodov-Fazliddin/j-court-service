@@ -4,7 +4,7 @@ package uzumtech.court.jcourtservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import uzumtech.court.jcourtservice.constant.enums.Status;
+import uzumtech.court.jcourtservice.constant.enums.ViolationStatus;
 
 @Entity
 @Getter
@@ -30,5 +30,5 @@ public class ViolationEntity {
     String description;
 
     @Enumerated(EnumType.STRING)
-    Status status;
+    ViolationStatus status;
 }

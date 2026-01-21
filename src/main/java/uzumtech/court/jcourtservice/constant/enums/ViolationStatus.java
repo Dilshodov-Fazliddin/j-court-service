@@ -1,6 +1,6 @@
 package uzumtech.court.jcourtservice.constant.enums;
 
-public enum Status {
+public enum ViolationStatus {
     REGISTERED,
     DECIDED,
     SENT
