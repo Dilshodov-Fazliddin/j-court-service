@@ -43,7 +43,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("The article with id:" + id + " not found"));
 
-
         articleMapper.updateArticleFromDto(articleRequest,articleEntity);
     }
 

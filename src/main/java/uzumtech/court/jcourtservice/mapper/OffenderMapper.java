@@ -12,4 +12,7 @@ public interface OffenderMapper {
     OffenderEntity toEntity(OffenderRequest request);
     OffenderEntity fromGcpToEntity(GcpResponse gcpResponse);
     OffenderResponse toResponse(OffenderEntity entity);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateOffenderFromDto(OffenderUpdateRequest dto, @MappingTarget OffenderEntity entity);
 }
