@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import uzumtech.court.jcourtservice.dto.request.ArticleRequest;
+import uzumtech.court.jcourtservice.dto.request.ArticleUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.ArticleResponse;
 import uzumtech.court.jcourtservice.service.ArticleService;
 
@@ -34,7 +35,7 @@ public class ArticleController {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateArticle(
             @PathVariable Long id,
-            @RequestBody ArticleRequest articleRequest) {
+            @RequestBody ArticleUpdateRequest articleRequest) {
         articleService.updateById(id, articleRequest);
     }
 

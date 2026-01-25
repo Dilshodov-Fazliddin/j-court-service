@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uzumtech.court.jcourtservice.dto.request.ArticleRequest;
+import uzumtech.court.jcourtservice.dto.request.ArticleUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.ArticleResponse;
 import uzumtech.court.jcourtservice.entity.ArticleEntity;
 import uzumtech.court.jcourtservice.exception.DataNotFoundException;
@@ -38,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateById(Long id, ArticleRequest articleRequest) {
+    public void updateById(Long id, ArticleUpdateRequest articleRequest) {
         var articleEntity = articleRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("The article with id:" + id + " not found"));

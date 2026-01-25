@@ -1,10 +1,14 @@
 package uzumtech.court.jcourtservice.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import uzumtech.court.jcourtservice.constant.enums.ViolationStatus;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,4 +35,7 @@ public class ViolationEntity {
 
     @Enumerated(EnumType.STRING)
     ViolationStatus status;
+
+    @Column(nullable = false)
+    LocalDateTime offenseTime;
 }
