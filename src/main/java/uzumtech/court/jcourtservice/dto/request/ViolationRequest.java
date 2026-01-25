@@ -2,6 +2,9 @@ package uzumtech.court.jcourtservice.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import uzumtech.court.jcourtservice.constant.enums.ViolationStatus;
+
+import java.time.LocalDateTime;
 
 public record ViolationRequest(
 
@@ -12,6 +15,12 @@ public record ViolationRequest(
         Long articleId,
 
         @NotBlank(message = "Description must not be blank")
-        String description
+        String description,
+
+        ViolationStatus violationStatus,
+
+        @NotNull(message = "offense time is required")
+        LocalDateTime offenseTime
+
 ) {
 }

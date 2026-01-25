@@ -6,9 +6,6 @@ public record ViolationResponse(
 
         Long id,
         String description,
-        ViolationStatus status,
-
-        Long offenderId,
-        Long articleId
+        ViolationStatus status
 ) {
 }

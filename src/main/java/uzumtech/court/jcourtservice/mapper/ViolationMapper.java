@@ -1,8 +1,8 @@
 package uzumtech.court.jcourtservice.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import uzumtech.court.jcourtservice.dto.request.ViolationRequest;
+import uzumtech.court.jcourtservice.dto.request.ViolationUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.ViolationResponse;
 import uzumtech.court.jcourtservice.entity.ViolationEntity;
 
@@ -14,4 +14,6 @@ public interface ViolationMapper {
 
     ViolationResponse toResponse(ViolationEntity entity);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateViolationFromDto(ViolationUpdateRequest dto, @MappingTarget ViolationEntity entity);
 }
