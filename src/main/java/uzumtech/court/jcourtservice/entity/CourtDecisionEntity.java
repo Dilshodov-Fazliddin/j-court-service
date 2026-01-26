@@ -3,6 +3,7 @@ package uzumtech.court.jcourtservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import uzumtech.court.jcourtservice.constant.enums.DecisionStatus;
 import uzumtech.court.jcourtservice.constant.enums.DecisionType;
 
 @Entity
@@ -18,7 +19,10 @@ public class CourtDecisionEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    String decisionNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "violation_id")
     ViolationEntity violation;
 
@@ -31,4 +35,11 @@ public class CourtDecisionEntity{
 
     @Column(nullable = false)
     String comment;
+
+    @Column(nullable = false)
+    String judgeName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    DecisionStatus decisionStatus;
 }
