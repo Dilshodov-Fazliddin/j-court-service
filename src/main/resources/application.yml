@@ -40,3 +40,7 @@ notification:
     merchantLogin: ${NOTIFICATION_MERCHANT_LOGIN}
     merchantPassword: ${NOTIFICATION_MERCHANT_PASSWORD}
     id: ${NOTIFICATION_ID}
+
+gemini:
+  url: ${GEMINI_URL}
+  key: ${GEMINI_KEY}
