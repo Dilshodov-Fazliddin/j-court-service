@@ -3,6 +3,7 @@ package uzumtech.court.jcourtservice.service.impl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import uzumtech.court.jcourtservice.service.OffenderService;
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@Slf4j
 public class OffenderServiceImpl implements OffenderService {
 
     OffenderRepository offenderRepository;
@@ -33,6 +35,8 @@ public class OffenderServiceImpl implements OffenderService {
         var user = gcpAdapter.getUser(offenderRequest.personalIdentificationNumber());
         var offenderEntity = offenderMapper.fromGcpToEntity(user);
         var save = offenderRepository.save(offenderEntity);
+
+        log.info("Offender created {}", save);
         return offenderMapper.toResponse(save);
     }
 
@@ -42,6 +46,8 @@ public class OffenderServiceImpl implements OffenderService {
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Offender not found with id" + id));
         offenderRepository.delete(offenderEntity);
+
+        log.info("Offender with id {} deleted", id);
     }
 
     @Override
@@ -68,6 +74,7 @@ public class OffenderServiceImpl implements OffenderService {
                 .orElseThrow(() -> new DataNotFoundException("Offender not found with id" + id));
 
         offenderMapper.updateOffenderFromDto(offenderRequest,offenderEntity);
+        log.info("Offender updated with id {} to {}", id, offenderRequest);
     }
 
 }

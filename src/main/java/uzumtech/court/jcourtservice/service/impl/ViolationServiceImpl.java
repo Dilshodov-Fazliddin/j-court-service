@@ -3,6 +3,7 @@ package uzumtech.court.jcourtservice.service.impl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import uzumtech.court.jcourtservice.service.ViolationService;
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@Slf4j
 public class ViolationServiceImpl implements ViolationService {
 
     ViolationMapper violationMapper;
@@ -50,6 +52,7 @@ public class ViolationServiceImpl implements ViolationService {
 
         var saved = violationRepository.save(violation);
 
+        log.info("Violation created {}", saved);
         return violationMapper.toResponse(saved);
     }
 
@@ -61,6 +64,8 @@ public class ViolationServiceImpl implements ViolationService {
                 .orElseThrow(() -> new DataNotFoundException("Violation not found with id:" + id));
 
         violationMapper.updateViolationFromDto(violationRequest,violation);
+
+        log.info("violation updated with id {} to {}", id, violationRequest);
     }
 
     @Override
