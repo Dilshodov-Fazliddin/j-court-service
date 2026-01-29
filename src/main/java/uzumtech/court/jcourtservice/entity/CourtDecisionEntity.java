@@ -12,6 +12,7 @@ import uzumtech.court.jcourtservice.constant.enums.DecisionType;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourtDecisionEntity{
 
