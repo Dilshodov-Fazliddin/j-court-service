@@ -3,6 +3,7 @@ package uzumtech.court.jcourtservice.service.impl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import uzumtech.court.jcourtservice.service.ArticleService;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@Slf4j
 public class ArticleServiceImpl implements ArticleService {
 
     ArticleMapper articleMapper;
@@ -27,6 +29,8 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResponse create(ArticleRequest articleRequest) {
         var entity = articleMapper.toEntity(articleRequest);
         var save = articleRepository.save(entity);
+
+        log.info("Article created {}", save);
         return articleMapper.toResponse(save);
     }
 
@@ -35,6 +39,8 @@ public class ArticleServiceImpl implements ArticleService {
         var articleEntity = articleRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Article not found with id:" + id));
+
+        log.info("Article deleted {}", articleEntity.getId());
         articleRepository.delete(articleEntity);
     }
 
@@ -45,6 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(() -> new DataNotFoundException("The article with id:" + id + " not found"));
 
         articleMapper.updateArticleFromDto(articleRequest,articleEntity);
+        log.info("Article updated with id={}", id);
     }
 
     @Override

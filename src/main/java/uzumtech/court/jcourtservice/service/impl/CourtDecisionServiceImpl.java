@@ -3,6 +3,7 @@ package uzumtech.court.jcourtservice.service.impl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@Slf4j
 public class CourtDecisionServiceImpl implements CourtDecisionService {
 
     CourtDecisionRepository courtDecisionRepository;
@@ -57,6 +59,8 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
 
         var saved = courtDecisionRepository.save(courtDecision);
 
+        log.info("Decision created {}", saved);
+
         return courtMapper.toResponse(saved);
     }
 
@@ -68,6 +72,8 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
                 .orElseThrow(() -> new DataNotFoundException("Decision not found with id" + id));
 
         courtDecision.setDecisionStatus(decisionStatus);
+
+        log.info("Decision status updated with id {} to {}", id, decisionStatus);
     }
 
     @Override
@@ -79,6 +85,8 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
 
 
         courtMapper.updateCourtDecisionFromDto(request,courtDecision);
+
+        log.info("Decision updated {} to {}", id,request);
     }
 
     @Override
