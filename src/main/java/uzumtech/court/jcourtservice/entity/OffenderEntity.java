@@ -38,4 +38,7 @@ public class OffenderEntity {
     @Column(nullable = false)
     Integer age;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
+    ArticleEntity article;
 }

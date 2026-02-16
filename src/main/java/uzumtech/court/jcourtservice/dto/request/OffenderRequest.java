@@ -15,6 +15,9 @@ public record OffenderRequest(
         String name,
 
         @NotBlank(message = "Passport number is required")
-        String passportNumber
+        String passportNumber,
+
+        @NotNull(message = "Passport number is required")
+        Long articleId
 ) {
 }

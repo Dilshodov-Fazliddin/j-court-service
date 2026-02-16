@@ -13,13 +13,11 @@ import uzumtech.court.jcourtservice.constant.enums.ViolationStatus;
 import uzumtech.court.jcourtservice.dto.request.ViolationRequest;
 import uzumtech.court.jcourtservice.dto.request.ViolationUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.ViolationResponse;
-import uzumtech.court.jcourtservice.entity.ViolationEntity;
 import uzumtech.court.jcourtservice.exception.DataNotFoundException;
 import uzumtech.court.jcourtservice.mapper.ViolationMapper;
 import uzumtech.court.jcourtservice.repository.ArticleRepository;
 import uzumtech.court.jcourtservice.repository.OffenderRepository;
 import uzumtech.court.jcourtservice.repository.ViolationRepository;
-import uzumtech.court.jcourtservice.service.OffenderService;
 import uzumtech.court.jcourtservice.service.ViolationService;
 
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class ViolationServiceImpl implements ViolationService {
                 .orElseThrow(()-> new DataNotFoundException("Offender not found with id" + violationRequest.offenderId()));
 
         var article = articleRepository
-                .findById(violationRequest.articleId())
+                .findById(offender.getArticle().getId())
                 .orElseThrow(()-> new DataNotFoundException("Article not found with id" + violationRequest.articleId()));
 
         violation.setArticle(article);
