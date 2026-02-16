@@ -8,7 +8,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
-import uzumtech.court.jcourtservice.dto.request.CourtDecisionRequest;
 import uzumtech.court.jcourtservice.dto.request.DecisionRecommendationRequest;
 import uzumtech.court.jcourtservice.dto.response.DecisionRecommendationResponse;
 import uzumtech.court.jcourtservice.utils.Utils;
