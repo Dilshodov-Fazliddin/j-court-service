@@ -21,13 +21,6 @@ public class OffenderController {
 
     OffenderService offenderService;
 
-    @PostMapping
-    public OffenderResponse createOffender(
-            @RequestBody @Valid OffenderRequest offenderRequest
-    ){
-        return offenderService.create(offenderRequest);
-    }
-
     @GetMapping
     public Page<OffenderResponse> getAllOffenders(Pageable pageable) {
         return offenderService.getAllOffenders(pageable);

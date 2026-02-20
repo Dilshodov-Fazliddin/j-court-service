@@ -32,13 +32,13 @@ public class OffenderEntity {
     @Column(nullable = false)
     String citizenship;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     String personalIdentificationNumber;
 
     @Column(nullable = false)
     Integer age;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", nullable = false)
     ArticleEntity article;
 }

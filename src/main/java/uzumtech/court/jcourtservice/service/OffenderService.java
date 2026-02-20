@@ -5,9 +5,10 @@ import org.springframework.data.domain.Pageable;
 import uzumtech.court.jcourtservice.dto.request.OffenderRequest;
 import uzumtech.court.jcourtservice.dto.request.OffenderUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.OffenderResponse;
+import uzumtech.court.jcourtservice.entity.OffenderEntity;
 
 public interface OffenderService {
-    OffenderResponse create(OffenderRequest offenderRequest);
+    OffenderEntity create(OffenderRequest offenderRequest);
     void deleteOffenderById(Long id);
     Page<OffenderResponse>getAllOffenders(Pageable pageable);
     OffenderResponse getOffenderByPersonalIdentificationNumber(String personalNumber);
