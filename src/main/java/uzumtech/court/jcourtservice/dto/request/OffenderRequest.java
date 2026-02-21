@@ -1,21 +1,13 @@
 package uzumtech.court.jcourtservice.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+@Builder
 public record OffenderRequest(
 
         @NotBlank(message = "Personal identification number is required")
         String personalIdentificationNumber,
-
-        @NotBlank(message = "Name is required")
-        String name,
-
-        @NotBlank(message = "Passport number is required")
-        String passportNumber,
 
         @NotNull(message = "Passport number is required")
         Long articleId

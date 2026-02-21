@@ -10,6 +10,7 @@ import uzumtech.court.jcourtservice.entity.ViolationEntity;
 public interface ViolationMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", constant = "REGISTERED")
     ViolationEntity toEntity(ViolationRequest request);
 
     ViolationResponse toResponse(ViolationEntity entity);

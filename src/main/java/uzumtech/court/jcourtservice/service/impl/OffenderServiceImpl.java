@@ -16,6 +16,7 @@ import uzumtech.court.jcourtservice.dto.response.OffenderResponse;
 import uzumtech.court.jcourtservice.entity.OffenderEntity;
 import uzumtech.court.jcourtservice.exception.DataNotFoundException;
 import uzumtech.court.jcourtservice.mapper.OffenderMapper;
+import uzumtech.court.jcourtservice.repository.ArticleRepository;
 import uzumtech.court.jcourtservice.repository.OffenderRepository;
 import uzumtech.court.jcourtservice.service.OffenderService;
 ;
@@ -29,25 +30,27 @@ public class OffenderServiceImpl implements OffenderService {
     OffenderRepository offenderRepository;
     GcpAdapter gcpAdapter;
     OffenderMapper offenderMapper;
+    ArticleRepository articleRepository;
+
 
     @Override
-    public OffenderResponse create(OffenderRequest offenderRequest) {
+    @Transactional
+    public OffenderEntity create(OffenderRequest offenderRequest) {
         var user = gcpAdapter.getUser(offenderRequest.personalIdentificationNumber());
+
         var offenderEntity = offenderMapper.fromGcpToEntity(user);
-        var save = offenderRepository.save(offenderEntity);
 
-        log.info("Offender created {}", save);
-        return offenderMapper.toResponse(save);
-    }
+        var article= articleRepository
+                .findById(offenderRequest.articleId())
+                .orElseThrow(()->new DataNotFoundException("Article not found with id"+offenderRequest.articleId()));
 
-    @Override
-    public void deleteOffenderById(Long id) {
-        OffenderEntity offenderEntity = offenderRepository
-                .findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Offender not found with id" + id));
-        offenderRepository.delete(offenderEntity);
+        offenderEntity.setArticle(article);
 
-        log.info("Offender with id {} deleted", id);
+        var saved = offenderRepository.save(offenderEntity);
+
+
+        log.info("Offender created {}", saved);
+        return saved;
     }
 
     @Override

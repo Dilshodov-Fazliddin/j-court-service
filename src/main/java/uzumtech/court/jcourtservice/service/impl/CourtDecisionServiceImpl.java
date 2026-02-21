@@ -23,10 +23,6 @@ import uzumtech.court.jcourtservice.repository.ViolationRepository;
 import uzumtech.court.jcourtservice.service.CourtDecisionService;
 import uzumtech.court.jcourtservice.utils.Utils;
 
-import java.util.Random;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
@@ -45,21 +41,13 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
                 .violationId())
                 .orElseThrow(() -> new DataNotFoundException("Violation not found with id" + courtDecisionRequest.violationId()));
 
-        var courtDecision = courtMapper.toEntity(courtDecisionRequest);
-
         var recommendation = geminiAdapter.getRecommendation(DecisionRecommendationRequest.builder().violation(violation).build());
 
-
-        courtDecision.setViolation(violation);
-        courtDecision.setFineAmount(recommendation.fineAmount());
-        courtDecision.setJudgeName(recommendation.judgeName());
-        courtDecision.setDecisionType(recommendation.decisionType());
-        courtDecision.setComment(recommendation.comment());
-        courtDecision.setDecisionNumber(Utils.generateDecisionNumber());
+        CourtDecisionEntity courtDecision = buildCourtDecision(courtDecisionRequest, violation, recommendation);
 
         var saved = courtDecisionRepository.save(courtDecision);
 
-        log.info("Decision created {}", saved);
+        log.info("Decision created {}", saved.getDecisionNumber());
 
         return courtMapper.toResponse(saved);
     }
@@ -96,5 +84,18 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
                 .orElseThrow(() -> new DataNotFoundException("Court not found with id" + id));
 
         return courtMapper.toResponse(courtDecision);
+    }
+
+    private CourtDecisionEntity buildCourtDecision(CourtDecisionRequest courtDecisionRequest, ViolationEntity violation, DecisionRecommendationResponse recommendation){
+        var courtDecision = courtMapper.toEntity(courtDecisionRequest);
+
+        courtDecision.setViolation(violation);
+        courtDecision.setFineAmount(recommendation.fineAmount());
+        courtDecision.setJudgeName(recommendation.judgeName());
+        courtDecision.setDecisionType(recommendation.decisionType());
+        courtDecision.setComment(recommendation.comment());
+        courtDecision.setDecisionNumber(Utils.generateDecisionNumber());
+
+        return courtDecision;
     }
 }

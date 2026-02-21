@@ -10,14 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uzumtech.court.jcourtservice.constant.enums.ViolationStatus;
+import uzumtech.court.jcourtservice.dto.request.OffenderRequest;
 import uzumtech.court.jcourtservice.dto.request.ViolationRequest;
 import uzumtech.court.jcourtservice.dto.request.ViolationUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.ViolationResponse;
+import uzumtech.court.jcourtservice.entity.OffenderEntity;
+import uzumtech.court.jcourtservice.entity.ViolationEntity;
 import uzumtech.court.jcourtservice.exception.DataNotFoundException;
 import uzumtech.court.jcourtservice.mapper.ViolationMapper;
 import uzumtech.court.jcourtservice.repository.ArticleRepository;
 import uzumtech.court.jcourtservice.repository.OffenderRepository;
 import uzumtech.court.jcourtservice.repository.ViolationRepository;
+import uzumtech.court.jcourtservice.service.OffenderService;
 import uzumtech.court.jcourtservice.service.ViolationService;
 
 @RequiredArgsConstructor
@@ -28,29 +32,28 @@ public class ViolationServiceImpl implements ViolationService {
 
     ViolationMapper violationMapper;
     ViolationRepository violationRepository;
-    OffenderRepository offenderRepository;
     ArticleRepository articleRepository;
-
+    OffenderService offenderService;
 
     @Override
+    @Transactional
     public ViolationResponse create(ViolationRequest violationRequest) {
         var violation = violationMapper.toEntity(violationRequest);
 
-        var offender = offenderRepository
-                .findById(violationRequest.offenderId())
-                .orElseThrow(()-> new DataNotFoundException("Offender not found with id" + violationRequest.offenderId()));
+        var article= articleRepository
+                .findById(violationRequest.articleId())
+                .orElseThrow(()->new DataNotFoundException("Article not found with id"+violationRequest.articleId()));
 
-        var article = articleRepository
-                .findById(offender.getArticle().getId())
-                .orElseThrow(()-> new DataNotFoundException("Article not found with id" + violationRequest.articleId()));
 
-        violation.setArticle(article);
+        var offender = offenderService.create(OffenderRequest.builder()
+                .personalIdentificationNumber(violationRequest.personalIdentificationNumber())
+                .articleId(violationRequest.articleId()).build());
+
+
         violation.setOffender(offender);
-        violation.setStatus(ViolationStatus.REGISTERED);
-
+        violation.setArticle(article);
         var saved = violationRepository.save(violation);
 
-        log.info("Violation created {}", saved);
         return violationMapper.toResponse(saved);
     }
 

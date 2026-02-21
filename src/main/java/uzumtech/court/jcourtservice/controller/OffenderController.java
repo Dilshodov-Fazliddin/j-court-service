@@ -21,13 +21,6 @@ public class OffenderController {
 
     OffenderService offenderService;
 
-    @PostMapping
-    public OffenderResponse createOffender(
-            @RequestBody @Valid OffenderRequest offenderRequest
-    ){
-        return offenderService.create(offenderRequest);
-    }
-
     @GetMapping
     public Page<OffenderResponse> getAllOffenders(Pageable pageable) {
         return offenderService.getAllOffenders(pageable);
@@ -47,10 +40,5 @@ public class OffenderController {
             @RequestBody @Valid OffenderUpdateRequest offenderRequest) {
 
         offenderService.update(id, offenderRequest);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        offenderService.deleteOffenderById(id);
     }
  }
