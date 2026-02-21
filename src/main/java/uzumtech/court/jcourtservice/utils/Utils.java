@@ -23,8 +23,9 @@ public final class Utils {
     коменты на русском.
     
     Обязан:
-    можешь изменить decisionType.
+    Ты обязан изменить decisionType.
     Ты обязан всем дать штраф.
+    Ты обязан написать имя и фамилию нарушителя
     
     НЕ ЗАБУДЬ ТЫ ОБЯЗАН СМЕНИТЬ СУММУ ШТРАФОВ В ПЛЮС ИЛИ МИНУС ОТ НАЗНАЧЕНОГО РАЗМЕРА
     МНЕ НУЖЕН БЫСТРЫЙ И КОРОТКИЙ ОТВЕТ
@@ -36,6 +37,7 @@ public final class Utils {
       "fineAmount": 0.0
     }
     
+    ДО 60 WORDS
     """.formatted(
                 request.violation().getOffender().getName(),
                 request.violation().getOffender().getSurname(),

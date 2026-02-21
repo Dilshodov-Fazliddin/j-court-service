@@ -47,7 +47,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
 
         var saved = courtDecisionRepository.save(courtDecision);
 
-        log.info("Decision created {}", saved);
+        log.info("Decision created {}", saved.getDecisionNumber());
 
         return courtMapper.toResponse(saved);
     }

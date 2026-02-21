@@ -32,7 +32,6 @@ public class ViolationServiceImpl implements ViolationService {
 
     ViolationMapper violationMapper;
     ViolationRepository violationRepository;
-    OffenderRepository offenderRepository;
     ArticleRepository articleRepository;
     OffenderService offenderService;
 

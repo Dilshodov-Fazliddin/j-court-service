@@ -31,6 +31,8 @@ public class OffenderServiceImpl implements OffenderService {
     GcpAdapter gcpAdapter;
     OffenderMapper offenderMapper;
     ArticleRepository articleRepository;
+
+
     @Override
     @Transactional
     public OffenderEntity create(OffenderRequest offenderRequest) {
@@ -49,16 +51,6 @@ public class OffenderServiceImpl implements OffenderService {
 
         log.info("Offender created {}", saved);
         return saved;
-    }
-
-    @Override
-    public void deleteOffenderById(Long id) {
-        OffenderEntity offenderEntity = offenderRepository
-                .findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Offender not found with id" + id));
-        offenderRepository.delete(offenderEntity);
-
-        log.info("Offender with id {} deleted", id);
     }
 
     @Override

@@ -9,7 +9,6 @@ import uzumtech.court.jcourtservice.entity.OffenderEntity;
 
 public interface OffenderService {
     OffenderEntity create(OffenderRequest offenderRequest);
-    void deleteOffenderById(Long id);
     Page<OffenderResponse>getAllOffenders(Pageable pageable);
     OffenderResponse getOffenderByPersonalIdentificationNumber(String personalNumber);
     void update(Long id, OffenderUpdateRequest offenderRequest);

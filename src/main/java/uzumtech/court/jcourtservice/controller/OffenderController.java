@@ -41,9 +41,4 @@ public class OffenderController {
 
         offenderService.update(id, offenderRequest);
     }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        offenderService.deleteOffenderById(id);
-    }
  }

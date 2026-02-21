@@ -22,7 +22,5 @@ public record ViolationRequest(
         @NotNull(message = "offense time is required")
         LocalDateTime offenseTime
 
-
-
 ) {
 }
