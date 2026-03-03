@@ -1,4 +1,4 @@
-package uzumtech.court.jcourtservice.adapter;
+package uzumtech.court.jcourtservice.component.adapter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

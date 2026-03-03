@@ -30,16 +30,30 @@ spring:
     baseline-version: 0
     schemas: postgres
 
-server:
-  port: 7878
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: true
 
-notification:
-  service:
+server:
+  port: 8088
+
+services:
+  notification:
     url:
       mail: ${NOTIFICATION_MAIL_URL}
-    merchantLogin: ${NOTIFICATION_MERCHANT_LOGIN}
-    merchantPassword: ${NOTIFICATION_MERCHANT_PASSWORD}
-    id: ${NOTIFICATION_ID}
+      merchantLogin: ${NOTIFICATION_MERCHANT_LOGIN}
+      merchantPassword: ${NOTIFICATION_MERCHANT_PASSWORD}
+  gcp:
+    url:
+      getUser: ${GET_USER_URL:http://217.29.121.129/gcp_api/api/gcp/users/by-pi}
 
 gemini:
   url: ${GEMINI_URL}

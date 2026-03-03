@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uzumtech.court.jcourtservice.adapter.GcpAdapter;
+import uzumtech.court.jcourtservice.component.adapter.GcpAdapter;
 import uzumtech.court.jcourtservice.dto.request.OffenderRequest;
 import uzumtech.court.jcourtservice.dto.request.OffenderUpdateRequest;
 import uzumtech.court.jcourtservice.dto.response.OffenderResponse;
