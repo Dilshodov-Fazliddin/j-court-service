@@ -7,8 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uzumtech.court.jcourtservice.adapter.GeminiAdapter;
+import uzumtech.court.jcourtservice.component.adapter.GeminiAdapter;
+import uzumtech.court.jcourtservice.component.kafka.producer.DecisionCreatedProducer;
 import uzumtech.court.jcourtservice.constant.enums.DecisionStatus;
+import uzumtech.court.jcourtservice.dto.event.DecisionCreatedEvent;
 import uzumtech.court.jcourtservice.dto.request.CourtDecisionRequest;
 import uzumtech.court.jcourtservice.dto.request.CourtDecisionUpdateRequest;
 import uzumtech.court.jcourtservice.dto.request.DecisionRecommendationRequest;
@@ -33,7 +35,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
     CourtDecisionMapper courtMapper;
     ViolationRepository violationRepository;
     GeminiAdapter geminiAdapter;
-
+    DecisionCreatedProducer decisionCreatedProducer;
 
     @Override
     public CourtDecisionResponse create(CourtDecisionRequest courtDecisionRequest) {
@@ -48,6 +50,10 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
         var saved = courtDecisionRepository.save(courtDecision);
 
         log.info("Decision created {}", saved.getDecisionNumber());
+
+        publishCreatedEvent(saved);
+
+        log.info("Decision sent to topic {}" , saved.getId());
 
         return courtMapper.toResponse(saved);
     }
@@ -97,5 +103,19 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
         courtDecision.setDecisionNumber(Utils.generateDecisionNumber());
 
         return courtDecision;
+    }
+
+    private void publishCreatedEvent(CourtDecisionEntity decision) {
+
+        var decisionCreatedEvent = DecisionCreatedEvent
+                .builder()
+                .decisionNumber(decision.getDecisionNumber())
+                .fineAmount(decision.getFineAmount())
+                .comment(decision.getComment())
+                .decisionType(decision.getDecisionType())
+                .judge(decision.getJudgeName())
+                .build();
+
+        decisionCreatedProducer.publishForDecisionCreatedTopic(decisionCreatedEvent);
     }
 }
