@@ -27,7 +27,7 @@ import uzumtech.court.jcourtservice.utils.Utils;
 
 @RequiredArgsConstructor
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CourtDecisionServiceImpl implements CourtDecisionService {
 
@@ -40,7 +40,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
     @Override
     public CourtDecisionResponse create(CourtDecisionRequest courtDecisionRequest) {
         var violation = violationRepository.findById(courtDecisionRequest
-                .violationId())
+                        .violationId())
                 .orElseThrow(() -> new DataNotFoundException("Violation not found with id" + courtDecisionRequest.violationId()));
 
         var recommendation = geminiAdapter.getRecommendation(DecisionRecommendationRequest.builder().violation(violation).build());
@@ -53,7 +53,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
 
         publishCreatedEvent(saved);
 
-        log.info("Decision sent to topic {}" , saved.getId());
+        log.info("Decision sent to topic {}", saved.getId());
 
         return courtMapper.toResponse(saved);
     }
@@ -72,15 +72,15 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateDecision(CourtDecisionUpdateRequest request,Long id) {
+    public void updateDecision(CourtDecisionUpdateRequest request, Long id) {
         var courtDecision = courtDecisionRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Decision not found with id" + id));
 
 
-        courtMapper.updateCourtDecisionFromDto(request,courtDecision);
+        courtMapper.updateCourtDecisionFromDto(request, courtDecision);
 
-        log.info("Decision updated {} to {}", id,request);
+        log.info("Decision updated {} to {}", id, request);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
         return courtMapper.toResponse(courtDecision);
     }
 
-    private CourtDecisionEntity buildCourtDecision(CourtDecisionRequest courtDecisionRequest, ViolationEntity violation, DecisionRecommendationResponse recommendation){
+    private CourtDecisionEntity buildCourtDecision(CourtDecisionRequest courtDecisionRequest, ViolationEntity violation, DecisionRecommendationResponse recommendation) {
         CourtDecisionEntity courtDecision = courtMapper.toEntity(courtDecisionRequest);
         courtDecision.setViolation(violation);
         courtDecision.setFineAmount(recommendation.fineAmount());

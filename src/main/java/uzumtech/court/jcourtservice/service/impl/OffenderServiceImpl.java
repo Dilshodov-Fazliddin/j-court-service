@@ -23,7 +23,7 @@ import uzumtech.court.jcourtservice.service.OffenderService;
 
 @RequiredArgsConstructor
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class OffenderServiceImpl implements OffenderService {
 
@@ -40,9 +40,9 @@ public class OffenderServiceImpl implements OffenderService {
 
         var offenderEntity = offenderMapper.fromGcpToEntity(user);
 
-        var article= articleRepository
+        var article = articleRepository
                 .findById(offenderRequest.articleId())
-                .orElseThrow(()->new DataNotFoundException("Article not found with id"+offenderRequest.articleId()));
+                .orElseThrow(() -> new DataNotFoundException("Article not found with id" + offenderRequest.articleId()));
 
         offenderEntity.setArticle(article);
 
@@ -56,7 +56,7 @@ public class OffenderServiceImpl implements OffenderService {
     @Override
     public Page<OffenderResponse> getAllOffenders(Pageable pageable) {
         Page<OffenderEntity> offenderEntities = offenderRepository.findAll(pageable);
-       return offenderEntities.map(offenderMapper::toResponse);
+        return offenderEntities.map(offenderMapper::toResponse);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class OffenderServiceImpl implements OffenderService {
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Offender not found with id" + id));
 
-        offenderMapper.updateOffenderFromDto(offenderRequest,offenderEntity);
+        offenderMapper.updateOffenderFromDto(offenderRequest, offenderEntity);
         log.info("Offender updated with id {} to {}", id, offenderRequest);
     }
 

@@ -26,7 +26,7 @@ import uzumtech.court.jcourtservice.service.ViolationService;
 
 @RequiredArgsConstructor
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class ViolationServiceImpl implements ViolationService {
 
@@ -40,9 +40,9 @@ public class ViolationServiceImpl implements ViolationService {
     public ViolationResponse create(ViolationRequest violationRequest) {
         var violation = violationMapper.toEntity(violationRequest);
 
-        var article= articleRepository
+        var article = articleRepository
                 .findById(violationRequest.articleId())
-                .orElseThrow(()->new DataNotFoundException("Article not found with id"+violationRequest.articleId()));
+                .orElseThrow(() -> new DataNotFoundException("Article not found with id" + violationRequest.articleId()));
 
 
         var offender = offenderService.create(OffenderRequest.builder()
@@ -64,7 +64,7 @@ public class ViolationServiceImpl implements ViolationService {
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Violation not found with id:" + id));
 
-        violationMapper.updateViolationFromDto(violationRequest,violation);
+        violationMapper.updateViolationFromDto(violationRequest, violation);
 
         log.info("violation updated with id {} to {}", id, violationRequest);
     }

@@ -18,7 +18,7 @@ import uzumtech.court.jcourtservice.service.ArticleService;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Slf4j
 public class ArticleServiceImpl implements ArticleService {
 
@@ -50,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("The article with id:" + id + " not found"));
 
-        articleMapper.updateArticleFromDto(articleRequest,articleEntity);
+        articleMapper.updateArticleFromDto(articleRequest, articleEntity);
         log.info("Article updated with id={}", id);
     }
 
