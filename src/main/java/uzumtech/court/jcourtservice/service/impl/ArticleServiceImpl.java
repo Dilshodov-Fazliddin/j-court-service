@@ -56,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<ArticleResponse> getAll(Pageable pageable) {
-        var articleEntities = articleRepository.findAll(pageable);
+        Page<ArticleEntity> articleEntities = articleRepository.findAll(pageable);
         return articleEntities.map(articleMapper::toResponse);
     }
 

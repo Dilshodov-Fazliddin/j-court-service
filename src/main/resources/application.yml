@@ -53,7 +53,7 @@ services:
       merchantPassword: ${NOTIFICATION_MERCHANT_PASSWORD}
   gcp:
     url:
-      getUser: ${GET_USER_URL:http://217.29.121.129/gcp_api/api/gcp/users/by-pi}
+      getUser: ${GET_USER_URL:http://localhost:8080/gcp_api/api/gcp/users/by-pi}
 
 gemini:
   url: ${GEMINI_URL}

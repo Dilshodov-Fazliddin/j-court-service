@@ -93,8 +93,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
     }
 
     private CourtDecisionEntity buildCourtDecision(CourtDecisionRequest courtDecisionRequest, ViolationEntity violation, DecisionRecommendationResponse recommendation){
-        var courtDecision = courtMapper.toEntity(courtDecisionRequest);
-
+        CourtDecisionEntity courtDecision = courtMapper.toEntity(courtDecisionRequest);
         courtDecision.setViolation(violation);
         courtDecision.setFineAmount(recommendation.fineAmount());
         courtDecision.setJudgeName(recommendation.judgeName());
@@ -106,8 +105,7 @@ public class CourtDecisionServiceImpl implements CourtDecisionService {
     }
 
     private void publishCreatedEvent(CourtDecisionEntity decision) {
-
-        var decisionCreatedEvent = DecisionCreatedEvent
+        DecisionCreatedEvent decisionCreatedEvent = DecisionCreatedEvent
                 .builder()
                 .decisionNumber(decision.getDecisionNumber())
                 .fineAmount(decision.getFineAmount())

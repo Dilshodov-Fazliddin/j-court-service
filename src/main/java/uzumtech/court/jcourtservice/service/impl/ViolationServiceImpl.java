@@ -71,7 +71,7 @@ public class ViolationServiceImpl implements ViolationService {
 
     @Override
     public Page<ViolationResponse> getAll(Pageable pageable) {
-        var violationEntities = violationRepository.findAll(pageable);
+        Page<ViolationEntity> violationEntities = violationRepository.findAll(pageable);
         return violationEntities.map(violationMapper::toResponse);
     }
 

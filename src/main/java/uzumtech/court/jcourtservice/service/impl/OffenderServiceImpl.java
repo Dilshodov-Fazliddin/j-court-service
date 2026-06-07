@@ -55,7 +55,7 @@ public class OffenderServiceImpl implements OffenderService {
 
     @Override
     public Page<OffenderResponse> getAllOffenders(Pageable pageable) {
-       var offenderEntities = offenderRepository.findAll(pageable);
+        Page<OffenderEntity> offenderEntities = offenderRepository.findAll(pageable);
        return offenderEntities.map(offenderMapper::toResponse);
     }
 
@@ -72,7 +72,7 @@ public class OffenderServiceImpl implements OffenderService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void update(Long id, OffenderUpdateRequest offenderRequest) {
-        OffenderEntity offenderEntity = offenderRepository
+        var offenderEntity = offenderRepository
                 .findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Offender not found with id" + id));
 
